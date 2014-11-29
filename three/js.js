@@ -16,8 +16,18 @@ $container.append(renderer.domElement);
 //
 // camera
 //
-var camera = new THREE.PerspectiveCamera(75, containerWidth / containerHeight, 0.1, 1000);
-camera.position.z = 4;
+
+// var camera = new THREE.PerspectiveCamera(75, containerWidth / containerHeight, 0.1, 1000);
+
+var cw = containerWidth / 100;
+var ch = containerHeight / 100;
+var camera = new THREE.OrthographicCamera(
+    cw / -2, cw / 2,
+    ch / 2, ch / -2,
+    0.1, 1000
+);
+
+camera.position.z = 5;
 
 //
 // scene
@@ -43,14 +53,23 @@ scene.add(pointLight);
 // things to draw
 //
 var unitCubeGeom = new THREE.BoxGeometry(1, 1, 1);
-var cubeMaterial = new THREE.MeshLambertMaterial({ color: 0x00ff00 });
+var cubeMaterial = new THREE.MeshLambertMaterial({ color: 0x008888 });
 var cube = new THREE.Mesh(unitCubeGeom, cubeMaterial);
+
+// cube.geometry.dynamic = true;
+cube.geometry.vertices[0].x = 1;
+cube.geometry.vertices[0].y = 1;
+cube.geometry.vertices[0].z = 1;
+cube.geometry.verticesNeedUpdate = true;
+// cube.geometry.normalsNeedUpdate = true;
 scene.add(cube);
+
 
 var radius = 0.7, segments = 16, rings = 16;
 var sphereGeom = new THREE.SphereGeometry(radius, segments, rings);
-var sphereMaterial = cubeMaterial;
+var sphereMaterial = new THREE.MeshLambertMaterial({ color: 0xcc9900 });
 var sphere = new THREE.Mesh(sphereGeom, sphereMaterial);
+
 scene.add(sphere);
 
 /////////////////////////////////////////////////////////////////////
@@ -59,6 +78,12 @@ function render() {
     requestAnimationFrame(render);
     renderer.render(scene, camera);
     cube.rotation.x += 0.03;
-    cube.rotation.y += 0.03;
+    cube.rotation.y += 0.04;
+    // camera.rotation.x += 0.02;
 }
 render();
+
+
+
+
+
